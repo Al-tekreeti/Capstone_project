@@ -10,5 +10,11 @@ pipeline {
 		sh 'hadolint Dockerfile'
             }
         }
+	stage('Build image') {
+	   steps {
+		sh 'echo "Building docker image"'
+		sh 'docker build -t simple-nginx:v2 .'
+           }
+        }
     }
 }
