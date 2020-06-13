@@ -13,7 +13,7 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
-		ssh -t 'docker build -t simple-nginx:v2 .'
+		sudo sh 'docker build -t simple-nginx:v2 .'
            }
         }
     }
