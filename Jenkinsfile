@@ -1,13 +1,13 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Linting') {
             steps {
-                sh 'echo "Hello World"'
-                sh '''
-                    echo "Multiline shell steps works too"
-                    ls -lsh
-                '''
+                sh 'echo "Lint HTML files"'
+                sh 'tidy -q -e *.html'
+
+		sh 'echo "Lint Dockerfile"'
+		sh 'hadolint Dockerfile'
             }
         }
     }
