@@ -13,7 +13,9 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
+		sh 'sudo su'
 		sh 'docker build -t simple-nginx:v2 .'
+		sh 'exit'
            }
         }
     }
