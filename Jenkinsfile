@@ -20,9 +20,10 @@ pipeline {
 	   steps {
 		sh 'echo "Pusing image to docker hub"'
 		sh 'IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")'
-		sh 'cat ~/docker_hub_password.txt | docker login -u maltekreeti --password-stdin'
-		sh 'docker tag $IMAGE_ID maltekreeti/simple-nginx:v2'
-		sh 'docker push maltekreeti/simple-nginx:v2'
+		withDockerRegistery([credentialsId: docker-hud-credential-id, url: "https://hub.docker.com/u/maltekreeti"]) {
+			sh 'docker tag $IMAGE_ID maltekreeti/simple-nginx:v2'
+	                sh 'docker push maltekreeti/simple-nginx:v2'
+		}
 	   }
 	}
     }
