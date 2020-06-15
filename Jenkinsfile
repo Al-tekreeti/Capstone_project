@@ -19,11 +19,12 @@ pipeline {
 	stage('Push image') {
 	   steps {
 		sh 'echo "Pusing image to docker hub"'
-		sh 'IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")'
+		//sh 'IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")'
 		//sh 'echo "$DOCKER_PASSWORD" | docker login -u maltekreeti --password-stdin'
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
-                     docker tag b4d46aa1d677 maltekreeti/simple-nginx:v2
+		     IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")
+                     docker tag $IMAGE_ID maltekreeti/simple-nginx:v2
 		     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
                      docker push maltekreeti/simple-nginx:v2
                      '''
