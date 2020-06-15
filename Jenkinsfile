@@ -24,6 +24,7 @@ pipeline {
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
                      docker tag b4d46aa1d677 maltekreeti/simple-nginx:v2
+		     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
                      docker push maltekreeti/simple-nginx:v2
                      '''
                }
