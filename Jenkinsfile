@@ -24,7 +24,7 @@ pipeline {
 	       // withDockerRegistery([credentialsId: "dockerhub-credential-id", url: "https://index.docker.io/v1/"]) {
 		script {
 		   docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credential-id') {
-                     // sh 'docker tag $IMAGE_ID maltekreeti/simple-nginx:v2'
+                      sh 'docker tag $IMAGE_ID maltekreeti/simple-nginx:v2'
                       sh 'docker push maltekreeti/simple-nginx:v2'
 		   }
        	        }
