@@ -23,7 +23,7 @@ pipeline {
 		//sh 'echo "$DOCKER_PASSWORD" | docker login -u maltekreeti --password-stdin'
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
-                     docker tag $IMAGE_ID maltekreeti/simple-nginx:v2
+                     docker tag b4d46aa1d677 maltekreeti/simple-nginx:v2
                      docker push maltekreeti/simple-nginx:v2
                      '''
                }
