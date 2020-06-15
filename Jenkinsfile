@@ -22,12 +22,18 @@ pipeline {
 		//sh 'echo "$DOCKER_PASSWORD" | docker login -u maltekreeti --password-stdin'
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
-		     IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")
-                     docker tag $IMAGE_ID maltekreeti/simple-nginx:v2
-		     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-                     docker push maltekreeti/simple-nginx:v2
+		         IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")
+                         docker tag $IMAGE_ID maltekreeti/simple-nginx:v2
+		         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+                         docker push maltekreeti/simple-nginx:v2
                      '''
                }
+	   }
+	}
+	stage('Deploy image') {
+	   steps {
+		sh 'echo "Deploy the container in kubernetes"'
+		sh 'kubectl apply -f deployment.yaml -f service.yaml'
 	   }
 	}
     }

@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: simple-nginx
-        image: maltekreeti/simple-nginx:v1
+        image: maltekreeti/simple-nginx:v2
         ports:
         - containerPort: 8080
