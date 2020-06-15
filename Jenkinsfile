@@ -24,8 +24,7 @@ pipeline {
                      sh '''
 		     IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")
                      docker tag $IMAGE_ID maltekreeti/simple-nginx:v2
-		     //docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-		     echo $DOCKER_PASSWORD | docker login -u "$DOCKER_USERNAME" --password-stdin
+		     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
                      docker push maltekreeti/simple-nginx:v2
                      '''
                }
