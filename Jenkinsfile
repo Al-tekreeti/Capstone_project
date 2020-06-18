@@ -18,7 +18,7 @@ pipeline {
         }
 	stage('Push image') {
 	   steps {
-		sh 'echo "Pusing image to docker hub"'
+		sh 'echo "Pushing image to docker hub"'
 		//sh 'echo "$DOCKER_PASSWORD" | docker login -u maltekreeti --password-stdin'
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
