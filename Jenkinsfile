@@ -33,7 +33,7 @@ pipeline {
 	stage('Deploy image') {
 	   steps {
 		sh 'echo "Deploy the container in kubernetes"'
-		withKubeConfig([credentialsId: 'kubeaccess']) {
+		withKubeConfig([credentialsId: 'kubeaccess-id']) {
        		   sh 'kubectl apply -f deployment.yaml -f service.yaml'
 		}
 	   }
