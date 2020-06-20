@@ -33,11 +33,12 @@ pipeline {
 	stage('Deploy image') {
 	   steps {
 		sh 'echo "Deploy the container in kubernetes"'
-		sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue.us-east-1.eksctl.io --kubeconfig /var/lib/jenkins/config'
-		sh 'kubectl get svc'
-		//withAWS(region:'us-east-1',credentials:'aws-nginx') {
-                //     sh 'kubectl get svc'
-                //}
+		//sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue.us-east-1.eksctl.io --kubeconfig /var/lib/jenkins/config'
+		//sh 'kubectl get svc'
+		withAWS(region:'us-east-1',credentials:'aws-nginx') {
+	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue.us-east-1.eksctl.io --kubeconfig /var/lib/jenkins/config'
+                    sh 'kubectl get svc'
+                }
 	   }
 	}
     }
