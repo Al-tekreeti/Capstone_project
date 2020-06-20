@@ -36,7 +36,7 @@ pipeline {
 		//sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue.us-east-1.eksctl.io --kubeconfig /var/lib/jenkins/config'
 		//sh 'kubectl get svc'
 		withAWS(region:'us-east-1',credentials:'aws-nginx') {
-	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue.us-east-1.eksctl.io --kubeconfig /var/lib/jenkins/config'
+	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue --kubeconfig /var/lib/jenkins/config'
                     sh 'kubectl get svc'
                 }
 	   }
