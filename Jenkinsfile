@@ -37,6 +37,7 @@ pipeline {
 		//sh 'kubectl get svc'
 		withAWS(region:'us-east-1',credentials:'aws-nginx') {
 	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod-blue --kubeconfig /var/lib/jenkins/config'
+		    sh 'aws sts get-caller-identity'
                     sh 'kubectl get svc'
                 }
 	   }
