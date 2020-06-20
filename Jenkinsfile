@@ -33,7 +33,9 @@ pipeline {
 	stage('Deploy image') {
 	   steps {
 		sh 'echo "Deploy the container in kubernetes"'
-		sh 'kubectl get svc'
+		withAWS(region:'us-east-1',credentials:'aws-nginx') {
+                     sh 'kubectl get svc'
+                }
 	   }
 	}
     }
