@@ -38,7 +38,7 @@ pipeline {
 		withAWS(region:'us-east-1',credentials:'aws-nginx') {
 	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod --kubeconfig /home/ubuntu/.kube/config'
 		    sh 'aws sts get-caller-identity'
-                    sh 'kubectl get svc'
+                    sh 'kubectl get svc --kubeconfig /home/ubuntu/.kube/config'
                 }
 	   }
 	}
