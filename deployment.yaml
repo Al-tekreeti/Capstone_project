@@ -1,19 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-nginx-deployment
+  name: simple-nginx-${DEPLOYMENT}
 spec:
   replicas: 2
-  selector:
+  selector: 
     matchLabels:
       app: simple-nginx
   template:
     metadata:
       labels:
         app: simple-nginx
+        deployment: ${DEPLOYMENT}
     spec:
       containers:
       - name: simple-nginx
-        image: maltekreeti/simple-nginx:v2
+        image: maltekreeti/simple-nginx:${IMAGE_TAG}
         ports:
         - containerPort: 8080
+        readinessProbe:  
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 5

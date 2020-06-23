@@ -13,7 +13,7 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
-		sh 'docker build -t simple-nginx:v2 .'
+		sh 'docker build -t simple-nginx:v4 .'
            }
         }
 	stage('Push image') {
@@ -22,10 +22,10 @@ pipeline {
 		//sh 'echo "$DOCKER_PASSWORD" | docker login -u maltekreeti --password-stdin'
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
-		         IMAGE_ID=$(docker images --filter=reference=simple-nginx:v2 --format "{{.ID}}")
-                         docker tag $IMAGE_ID maltekreeti/simple-nginx:v2
+		         IMAGE_ID=$(docker images --filter=reference=simple-nginx:v4 --format "{{.ID}}")
+                         docker tag $IMAGE_ID maltekreeti/simple-nginx:v4
 		         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-                         docker push maltekreeti/simple-nginx:v2
+                         docker push maltekreeti/simple-nginx:v4
                      '''
                }
 	   }
@@ -37,8 +37,11 @@ pipeline {
 		//sh 'kubectl get svc'
 		withAWS(region:'us-east-1',credentials:'aws-nginx') {
 	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod --kubeconfig /home/ubuntu/.kube/config'
-		    sh 'aws sts get-caller-identity'
-                    sh 'kubectl get svc --kubeconfig /home/ubuntu/.kube/config'
+		    sh '''
+			DEPLOYMENT=blue envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
+			DEPLOYMENT=blue IMAGE_TAG=v4 envsubst < deployment.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
+		    '''
+                    //sh 'kubectl get svc --kubeconfig /home/ubuntu/.kube/config'
                 }
 	   }
 	}
