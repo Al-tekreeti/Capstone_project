@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'].join('\n'), description: 'Pick the environment')
+        choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'], description: 'Pick the environment')
         string(defaultValue: '', description: 'image version', name: 'IMAGE_TAG')
 
     }
