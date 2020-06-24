@@ -13,8 +13,8 @@ pipeline {
     stages {
 	stage('Deployment Parameters') {
 	    steps {
+		sh 'echo "Gather deployment parameters"'
                 script {
-                    sh 'echo "Gather deployment parameters"'
 		   
                    // Get the input
                     def userInput = input(
@@ -24,6 +24,9 @@ pipeline {
 	            // Save to variables.
                     DEPLOYMENT = userInput.deployment
                     IMAGE_TAG = userInput.image_tag
+		    // Print to the console
+		       echo "$DEPLOYMENT and $IMAGE_TAG"
+		       	
                 }
 	    }
 	}
