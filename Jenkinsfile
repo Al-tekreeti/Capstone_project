@@ -5,11 +5,6 @@
 
 pipeline {
     agent any
-//    parameters {
-//        choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'], description: 'Pick the environment')
-//        string(defaultValue: '', description: 'image version', name: 'IMAGE_TAG')
-
-//    }
     stages {
 	stage('Deployment Parameters') {
 	    steps {
@@ -19,13 +14,11 @@ pipeline {
                    // Get the input
                     def userInput = input(
                             id: 'userInput', message: 'Enter deployment environment and image tag',
-                           parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type'),
-                                         string(defaultValue: '', description: 'image version', name: 'image_tag')])
+                           parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type')])
 	            // Save to variables.
                   env.DEPLOYMENT = userInput.deployment
-                   env.IMAGE_TAG = userInput.image_tag
 		    // Print to the console
-		       echo "${env.DEPLOYMENT} and ${env.IMAGE_TAG}"
+		       echo "${env.DEPLOYMENT}"
 		       	
                 }
 	    }
@@ -41,11 +34,8 @@ pipeline {
         }
 	stage('Build image') {
 	   steps {
-               script {
-                   echo "Building docker image with tag ${env.IMAGE_TAG}"
-	       	   tag = ${env.IMAGE_TAG}
-               }
-	       sh 'docker build -t simple-nginx:$tag .'
+               sh ' echo "Building docker image with tag ${BUILD_NUMBER}"'
+	       sh 'docker build -t simple-nginx:${BUILD_NUMBER} .'
            }
         }
 	stage('Push image') {
@@ -55,9 +45,9 @@ pipeline {
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
 		         IMAGE_ID=$(docker images --filter=reference=simple-nginx:${IMAGE_TAG} --format "{{.ID}}")
-                         docker tag $IMAGE_ID maltekreeti/simple-nginx:${env.IMAGE_TAG}
+                         docker tag $IMAGE_ID maltekreeti/simple-nginx:${BUILD_NUMBER}
 		         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-                         docker push maltekreeti/simple-nginx:${IMAGE_TAG}
+                         docker push maltekreeti/simple-nginx:${BUILD_NUMBER}
                      '''
                }
 	   }
