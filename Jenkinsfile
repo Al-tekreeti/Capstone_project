@@ -10,7 +10,7 @@ pipeline {
                    // Get the input
                     env.DEPLOYMENT = input(
                             message: 'Enter deployment environment and image tag',
-                           parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type')])
+                           parameters: [choice(name: 'deployment', choices: ['blue','green'].join('\n'), description: 'Please select the Environment type')])
 		    // Print to the console
 		       echo "${env.DEPLOYMENT}"
 		       	
