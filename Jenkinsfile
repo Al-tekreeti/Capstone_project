@@ -17,7 +17,7 @@ pipeline {
                     sh 'echo "Gather deployment parameters"'
 		   
                    // Get the input
-                    DEPLOYMENT = input(
+                    def userInput = input(
                             id: 'userInput', message: 'Enter deployment environment and image tag',
                             parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type'),
                                          string(defaultValue: '', description: 'image version', name: 'image_tag')])
