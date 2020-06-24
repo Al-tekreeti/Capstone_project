@@ -23,8 +23,8 @@ pipeline {
                                             name: 'image_tag')
                             ])
 	            // Save to variables.
-                    DEPLOYMENT = userInput.deployment
-                    IMAGE_TAG = userInput.image_tag?:''
+                    env.DEPLOYMENT = userInput.deployment
+                    env.IMAGE_TAG = userInput.image_tag?:''
                 }
 	    }
 	}
@@ -40,7 +40,7 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
-		sh 'docker build -t simple-nginx:${IMAGE_TAG} .'
+		sh 'docker build -t simple-nginx:${env.IMAGE_TAG} .'
            }
         }
 	stage('Push image') {
@@ -49,10 +49,10 @@ pipeline {
 		//sh 'echo "$DOCKER_PASSWORD" | docker login -u maltekreeti --password-stdin'
     		withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub-credential-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
                      sh '''
-		         IMAGE_ID=$(docker images --filter=reference=simple-nginx:${IMAGE_TAG} --format "{{.ID}}")
-                         docker tag $IMAGE_ID maltekreeti/simple-nginx:${IMAGE_TAG}
+		         IMAGE_ID=$(docker images --filter=reference=simple-nginx:${env.IMAGE_TAG} --format "{{.ID}}")
+                         docker tag $IMAGE_ID maltekreeti/simple-nginx:${env.IMAGE_TAG}
 		         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-                         docker push maltekreeti/simple-nginx:${IMAGE_TAG}
+                         docker push maltekreeti/simple-nginx:${env.IMAGE_TAG}
                      '''
                }
 	   }
@@ -64,7 +64,7 @@ pipeline {
 	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod --kubeconfig /home/ubuntu/.kube/config'
 		    sh '''
 			//DEPLOYMENT=blue envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
-			envsubst < deployment.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
+			DEPLOYMENT=${env.DEPLOYMENT} IMAGE_TAG=${env.IMAGE_TAG} envsubst < deployment.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
 		    '''
                 }
 	   }
@@ -78,7 +78,7 @@ pipeline {
         stage('Deploy production') {
            steps {
                 sh 'echo "Switch the traffic to the new deployment (blue)"'
-                sh 'envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -'
+                sh 'DEPLOYMENT=${env.DEPLOYMENT} envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -'
            }
         }
     }
