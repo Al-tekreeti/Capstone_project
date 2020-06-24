@@ -1,33 +1,35 @@
+// Variables for input
+   def DEPLOYMENT
+   def IMAGE_TAG
+
+
 pipeline {
     agent any
-    parameters {
-        choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'], description: 'Pick the environment')
-        string(defaultValue: '', description: 'image version', name: 'IMAGE_TAG')
+   // parameters {
+     //   choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'], description: 'Pick the environment')
+       // string(defaultValue: '', description: 'image version', name: 'IMAGE_TAG')
 
-    }
+    //}
     stages {
 	stage('Deployment Parameters') {
 	    steps {
                 script {
                     sh 'echo "Gather deployment parameters"'
-		   // Variables for input
-                    //def DEPLOYMENT
-                    //def IMAGE_TAG
 		   
                    // Get the input
-                    def userInput = input(
+                    DEPLOYMENT = input(
                             id: 'userInput', message: 'Enter deployment environment and image tag',
                             parameters: [
  				    
-                                    choice(name: 'deployment', 
+                                    choice(defaultValue: 'GREEN', name: 'deployment', 
                                            choices: ['BLUE','GREEN'].join('\n'), 
                                            description: 'Please select the Environment type'),
-                                    string(description: 'image version',
+                                    string(defaultValue: '', description: 'image version',
                                             name: 'image_tag')
                             ])
 	            // Save to variables.
-                    params.DEPLOYMENT = userInput.deployment
-                    params.IMAGE_TAG = userInput.image_tag
+                    DEPLOYMENT = userInput.deployment
+                    IMAGE_TAG = userInput.image_tag
                 }
 	    }
 	}
@@ -43,7 +45,7 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
-		sh 'docker build -t simple-nginx:${params.IMAGE_TAG} .'
+		sh 'docker build -t simple-nginx:${IMAGE_TAG} .'
            }
         }
 	stage('Push image') {
