@@ -11,7 +11,7 @@ pipeline {
 		   
                    // Get the input
                     def userInput = input(
-                            id: 'userInput', message: 'Enter deployment environment and image tag:?',
+                            id: 'userInput', message: 'Enter deployment environment and image tag',
                             parameters: [
  				    
                                     choice(defaultValue: 'green', 
@@ -23,8 +23,8 @@ pipeline {
                                             name: 'image_tag')
                             ])
 	            // Save to variables.
-                    export DEPLOYMENT = userInput.deployment
-                    export IMAGE_TAG = userInput.image_tag?:''
+                    DEPLOYMENT = userInput.deployment
+                    IMAGE_TAG = userInput.image_tag?:''
                 }
 	    }
 	}
