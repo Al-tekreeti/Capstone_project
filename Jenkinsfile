@@ -1,7 +1,3 @@
-// Variables for input
-   //def DEPLOYMENT
-   //def IMAGE_TAG
-
 
 pipeline {
     agent any
@@ -16,7 +12,7 @@ pipeline {
                             id: 'userInput', message: 'Enter deployment environment and image tag',
                            parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type')])
 	            // Save to variables.
-                  env.DEPLOYMENT = userInput.deployment
+                  env.DEPLOYMENT = userInput['deployment']
 		    // Print to the console
 		       echo "${env.DEPLOYMENT}"
 		       	
