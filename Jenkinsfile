@@ -11,25 +11,25 @@ pipeline {
 
     }
     stages {
-	stage('Deployment Parameters') {
-	    steps {
-		sh 'echo "Gather deployment parameters"'
-                script {
-		   
-                   // Get the input
-                    def userInput = input(
-                            id: 'userInput', message: 'Enter deployment environment and image tag',
-                            parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type'),
-                                         string(defaultValue: '', description: 'image version', name: 'image_tag')])
-	            // Save to variables.
-                   DEPLOYMENT = userInput.deployment
-                   IMAGE_TAG = userInput.image_tag
+//	stage('Deployment Parameters') {
+//	    steps {
+//		sh 'echo "Gather deployment parameters"'
+  //              script {
+//		   
+  //                 // Get the input
+    //                def userInput = input(
+      //                      id: 'userInput', message: 'Enter deployment environment and image tag',
+      //                     parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type'),
+      //                                   string(defaultValue: '', description: 'image version', name: 'image_tag')])
+	//            // Save to variables.
+         //          DEPLOYMENT = userInput.deployment
+           //        IMAGE_TAG = userInput.image_tag
 		    // Print to the console
-		       echo "${params.DEPLOYMENT} and ${params.IMAGE_TAG}"
-		       	
-                }
-	    }
-	}
+	//	       echo "${params.DEPLOYMENT} and ${params.IMAGE_TAG}"
+	//	       	
+          //      }
+	  //  }
+//	}
         stage('Linting') {
             steps {
                 sh 'echo "Lint HTML files"'
