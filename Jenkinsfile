@@ -42,9 +42,8 @@ pipeline {
 	stage('Build image') {
 	   steps {
                script {
+                   echo "Building docker image with tag ${env.IMAGE_TAG}"
 	       	   tag = ${env.IMAGE_TAG}
-		   echo "Building docker image with tag ${env.IMAGE_TAG}"
-//                   docker build -t simple-nginx:${env.IMAGE_TAG} .
                }
 	       sh 'docker build -t simple-nginx:$tag .'
            }
