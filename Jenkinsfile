@@ -19,12 +19,10 @@ pipeline {
                             id: 'userInput', message: 'Enter deployment environment and image tag',
                             parameters: [
  				    
-                                    choice(defaultValue: 'GREEN', 
-                                           name: 'deployment', 
+                                    choice(name: 'deployment', 
                                            choices: ['BLUE','GREEN'].join('\n'), 
                                            description: 'Please select the Environment type'),
-                                    string(defaultValue: '',
-                                            description: 'image version',
+                                    string(description: 'image version',
                                             name: 'image_tag')
                             ])
 	            // Save to variables.
