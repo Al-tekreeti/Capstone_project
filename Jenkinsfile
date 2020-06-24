@@ -1,15 +1,15 @@
 // Variables for input
-   def DEPLOYMENT
-   def IMAGE_TAG
+   //def DEPLOYMENT
+   //def IMAGE_TAG
 
 
 pipeline {
     agent any
-   // parameters {
-     //   choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'], description: 'Pick the environment')
-       // string(defaultValue: '', description: 'image version', name: 'IMAGE_TAG')
+    parameters {
+        choice(name: 'DEPLOYMENT', choices: ['BLUE', 'GREEN'], description: 'Pick the environment')
+        string(defaultValue: '', description: 'image version', name: 'IMAGE_TAG')
 
-    //}
+    }
     stages {
 	stage('Deployment Parameters') {
 	    steps {
@@ -22,10 +22,10 @@ pipeline {
                             parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type'),
                                          string(defaultValue: '', description: 'image version', name: 'image_tag')])
 	            // Save to variables.
-                    DEPLOYMENT = userInput.deployment
-                    IMAGE_TAG = userInput.image_tag
+                   params.DEPLOYMENT = userInput.deployment
+                    params.IMAGE_TAG = userInput.image_tag
 		    // Print to the console
-		       echo "$DEPLOYMENT and $IMAGE_TAG"
+		       echo "$params.DEPLOYMENT and $params.IMAGE_TAG"
 		       	
                 }
 	    }
@@ -41,8 +41,8 @@ pipeline {
         }
 	stage('Build image') {
 	   steps {
-		sh 'echo "Building docker image with tag ${IMAGE_TAG}"'
-		sh 'docker build -t "simple-nginx:${IMAGE_TAG}" .'
+		sh 'echo "Building docker image with tag ${params.IMAGE_TAG}"'
+		sh 'docker build -t simple-nginx:${params.IMAGE_TAG} .'
            }
         }
 	stage('Push image') {
