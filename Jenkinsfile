@@ -67,7 +67,10 @@ pipeline {
         stage('Deploy production') {
            steps {
                 sh 'echo "Switch the traffic to the new deployment (blue)"'
-                sh 'envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -'
+                sh """
+	           #!/usr/bin/env bash
+         	   DEPLOYMENT=${env.DEPLOYMENT}  envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
+		"""
            }
         }
     }
