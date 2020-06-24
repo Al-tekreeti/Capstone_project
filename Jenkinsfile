@@ -51,11 +51,10 @@ pipeline {
 		sh 'echo "Deploy the container in kubernetes (green)"'
 		withAWS(region:'us-east-1',credentials:'aws-nginx') {
 	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod --kubeconfig /home/ubuntu/.kube/config'
-		    sh '''
+		    sh """
 			#!/usr/bin/env bash
-			//DEPLOYMENT=blue envsubst < service.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
 			DEPLOYMENT=${env.DEPLOYMENT} IMAGE_TAG=${BUILD_NUMBER} envsubst < deployment.yaml | kubectl --kubeconfig /home/ubuntu/.kube/config apply -f -
-		    '''
+		    """
                 }
 	   }
 	}
