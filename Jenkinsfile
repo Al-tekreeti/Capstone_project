@@ -22,10 +22,10 @@ pipeline {
                             parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type'),
                                          string(defaultValue: '', description: 'image version', name: 'image_tag')])
 	            // Save to variables.
-                   params.DEPLOYMENT = userInput.deployment
-                    params.IMAGE_TAG = userInput.image_tag
+                   DEPLOYMENT = userInput.deployment
+                   IMAGE_TAG = userInput.image_tag
 		    // Print to the console
-		       echo "$params.DEPLOYMENT and $params.IMAGE_TAG"
+		       echo "${params.DEPLOYMENT} and ${params.IMAGE_TAG}"
 		       	
                 }
 	    }
