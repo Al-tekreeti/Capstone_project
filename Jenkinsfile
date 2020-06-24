@@ -48,7 +48,7 @@ pipeline {
 	}
 	stage('Deploy staging') {
 	   steps {
-		sh 'echo "Deploy the container in kubernetes ${env.DEPLOYMENT}"'
+		sh 'echo "Deploy the container in kubernetes $(env.DEPLOYMENT)"'
 		withAWS(region:'us-east-1',credentials:'aws-nginx') {
 	            sh 'aws eks --region us-east-1 update-kubeconfig --name prod --kubeconfig /home/ubuntu/.kube/config'
 		    sh '''
