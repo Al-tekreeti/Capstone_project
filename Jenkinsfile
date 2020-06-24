@@ -39,7 +39,7 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
-		sh 'docker build -t simple-nginx:${IMAGE_TAG} .'
+		sh 'docker build -t simple-nginx:"${IMAGE_TAG}" .'
            }
         }
 	stage('Push image') {
