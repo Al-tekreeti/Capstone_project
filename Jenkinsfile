@@ -1,4 +1,7 @@
 pipeline {
+//    environment {
+//        DEPLOYMENT = ''
+//    }
     agent any
     stages {
 	stage('Deployment Parameters') {
@@ -40,7 +43,7 @@ pipeline {
 	stage('Build image') {
 	   steps {
 		sh 'echo "Building docker image"'
-		sh 'docker build -t simple-nginx:${env.IMAGE_TAG} .'
+		sh 'docker build -t simple-nginx:$(echo env.IMAGE_TAG) .'
            }
         }
 	stage('Push image') {
