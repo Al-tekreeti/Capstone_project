@@ -8,11 +8,9 @@ pipeline {
                 script {
 		   
                    // Get the input
-                    def userInput = input(
-                            id: 'userInput', message: 'Enter deployment environment and image tag',
+                    env.DEPLOYMENT = input(
+                            message: 'Enter deployment environment and image tag',
                            parameters: [choice(name: 'deployment', choices: ['BLUE','GREEN'].join('\n'), description: 'Please select the Environment type')])
-	            // Save to variables.
-                  env.DEPLOYMENT = userInput['deployment']
 		    // Print to the console
 		       echo "${env.DEPLOYMENT}"
 		       	
