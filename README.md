@@ -5,7 +5,9 @@ In this project, a CICD pipeline using Jenkins is developed to demonstrate the a
 To use the code, you need first to provision a kubernets cluster in AWS cloud. The easiest way to do that is by using the eksctl tool:
 
 <code> eksctl create cluster --name prod --version 1.16 --region us-east-1 --nodegroup-name standard-workers --node-type t2.medium --nodes 4 --nodes-min 2 --nodes-max 4 --managed</code>
+
 If the command is successful, a cluster with 4 nodes of type `t2.medium` is provisioned in the `us-east-1` region. The configuration of the cluster is available as a `config` file in the following directory:
 
 <code>$HOME/.kube/config</code>
+
 After installing jenkins, docker, and their dependencies in the EC2 machine, the following configurations need to be managed. Since jenkins would invoke docker non-interactively to build and deploy docker containers, jenkins as a user should be added to the docker group. To tag and push containers to docker hub, the login credentials need to be created in jenkins server. To let jenkins utilize `kubectl` to manage the cluster, jenkins should be authorized to access the `kubeconfig` file. In addition, jenkins should have be configured properly to access AWS services.
