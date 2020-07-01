@@ -2,7 +2,7 @@
 In this project, a CICD pipeline using Jenkins is developed to demonstrate the automation of the blue-green deployment strategy of a web application. The Jenkins server is hosted in an EC2 instance provided by the AWS cloud plateform. The web application is a Hello-World plain html file hosted by an NGINX server. The app is first containerized using Docker and then deployed in a Kubernetes cluster provisioned by the AWS Elastic Kubernetes Service (EKS). A separate stage in the pipeline is dedicated to guaranttee the quality of the html file and docker image using linting services.
 
 ## Usage
-To use the code, you need first to provision a kubernets cluster in AWS cloud. The easiest way to do that is by using the eksctl tool:
+To use the code, you need first to provision a kubernetes cluster in AWS cloud. The easiest way to do that is by using the eksctl tool:
 
 <code> eksctl create cluster --name prod --version 1.16 --region us-east-1 --nodegroup-name standard-workers --node-type t2.medium --nodes 4 --nodes-min 2 --nodes-max 4 --managed</code>
 
